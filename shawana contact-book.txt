@@ -2,7 +2,7 @@ import re  # Import regular expressions for phone number validation
 
 # Contact class
 class Contact:
-    def _init_(self, name, phone_number, email, address):
+    def __init__(self, name, phone_number, email, address):
         self.name = name
         self.phone_number = phone_number
         self.email = email
