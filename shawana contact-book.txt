@@ -1,0 +1,137 @@
+import re  # Import regular expressions for phone number validation
+
+# Contact class
+class Contact:
+    def _init_(self, name, phone_number, email, address):
+        self.name = name
+        self.phone_number = phone_number
+        self.email = email
+        self.address = address
+
+# Contact list
+contacts = []
+
+# Validate phone number
+def is_valid_phone_number(phone_number):
+    # Check if the phone number is digits only and has a length of 10
+    return phone_number.isdigit() and len(phone_number) == 10
+
+# Validate email
+def is_valid_email(email):
+    # Check if the email matches a simple pattern
+    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    return re.match(pattern, email) is not None
+
+# Add contact function
+def add_contact():
+    name = input("Enter contact name: ")
+    phone_number = input("Enter phone number (10 digits): ")
+    
+    # Validate phone number
+    if not is_valid_phone_number(phone_number):
+        print("Invalid phone number. It should be 10 digits long.")
+        return
+
+    email = input("Enter email: ")
+    
+    # Validate email
+    if not is_valid_email(email):
+        print("Invalid email address.")
+        return
+
+    address = input("Enter address: ")
+    
+    # Check if the contact already exists
+    for contact in contacts:
+        if contact.name == name or contact.phone_number == phone_number:
+            print("Contact with this name or phone number already exists.")
+            return
+    
+    # If no duplicate, add the new contact
+    contact = Contact(name, phone_number, email, address)
+    contacts.append(contact)
+    print("Contact added successfully!")
+
+# View contact list function
+def view_contact_list():
+    print("Contact List:")
+    for contact in contacts:
+        print(f"{contact.name} - {contact.phone_number}")
+
+# Search contact function
+def search_contact():
+    query = input("Enter search query (name or phone number): ")
+    results = [contact for contact in contacts if query in contact.name or query in contact.phone_number]
+    if results:
+        print("Search results:")
+        for contact in results:
+            print(f"{contact.name} - {contact.phone_number}")
+    else:
+        print("No results found.")
+
+# Update contact function
+def update_contact():
+    name_or_phone_number = input("Enter contact name or phone number to update: ")
+    for contact in contacts:
+        if name_or_phone_number in contact.name or name_or_phone_number in contact.phone_number:
+            contact.name = input("Enter new name: ")
+            new_phone_number = input("Enter new phone number (10 digits): ")
+            
+            # Validate new phone number
+            if not is_valid_phone_number(new_phone_number):
+                print("Invalid phone number. It should be 10 digits long.")
+                return
+            
+            contact.phone_number = new_phone_number
+            new_email = input("Enter new email: ")
+            
+            # Validate new email
+            if not is_valid_email(new_email):
+                print("Invalid email address.")
+                return
+            
+            contact.email = new_email
+            contact.address = input("Enter new address: ")
+            print("Contact updated successfully!")
+            return
+    print("Contact not found.")
+
+# Delete contact function
+def delete_contact():
+    name_or_phone_number = input("Enter contact name or phone number to delete: ")
+    for contact in contacts:
+        if name_or_phone_number in contact.name or name_or_phone_number in contact.phone_number:
+            contacts.remove(contact)
+            print("Contact deleted successfully!")
+            return
+    print("Contact not found.")
+
+# Main function
+def main():
+    while True:
+        print("Main Menu:")
+        print("1. Add Contact")
+        print("2. View Contact List")
+        print("3. Search Contact")
+        print("4. Update Contact")
+        print("5. Delete Contact")
+        print("6. Exit")
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            add_contact()
+        elif choice == "2":
+            view_contact_list()
+        elif choice == "3":
+            search_contact()
+        elif choice == "4":
+            update_contact()
+        elif choice == "5":
+            delete_contact()
+        elif choice == "6":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if _name_ == "_main_":
+    main()
